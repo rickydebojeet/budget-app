@@ -1,4 +1,8 @@
 class Category:
+  name = ""
+
+  def __init__(self, x):
+    self.name = x
 
 
 
