@@ -14,7 +14,7 @@ class Category:
 
   #Withdraw method
   def withdraw(self, amount, description = ""):
-    if float(amount) > self.balance:
+    if self.check_funds(amount):
       return False
     else:
       self.ledger.append({"amount" : (0 - float(amount)), "description" : description})
@@ -27,10 +27,19 @@ class Category:
 
   #Transfer method
   def transfer(self, amount, cat):
-    if float(amount) > balance:
+    if self.check_funds(amount):
       return False
     else:
       self.withdraw(amount, ("Transfer to " + cat))
+      cat.deposit(amount, ("Transfer from " + cat))
+      return True
+
+  #Check funds method
+  def check_funds(self, amount):
+    if float(amount) > balance:
+      return False
+    else:
+      return True
 
   
 
