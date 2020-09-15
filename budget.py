@@ -9,7 +9,7 @@ class Category:
 
   #Deposit method
   def deposit(self, amount, description = ""):
-    self.ledger.append({"amount" : float(amount), "description" : description})
+    self.ledger.append({"amount" : amount, "description" : description})
     self.balance = self.balance + float(amount)
 
   #Withdraw method
@@ -17,7 +17,7 @@ class Category:
     if self.check_funds(amount) == False:
       return False
     else:
-      self.ledger.append({"amount" : (0 - float(amount)), "description" : description})
+      self.ledger.append({"amount" : (0 - amount), "description" : description})
       self.balance = self.balance - float(amount)
       return True
 
@@ -31,7 +31,7 @@ class Category:
       return False
     else:
       self.withdraw(amount, ("Transfer to " + cat.name))
-      cat.deposit(amount, ("Transfer from " + cat.name))
+      cat.deposit(amount, ("Transfer from " + self.name))
       return True
 
   #Check funds method
@@ -55,14 +55,14 @@ class Category:
       fpart = fpart[: 23].ljust(23)
       spart = spart[: 7].rjust(7)
       displayer = displayer + fpart + spart + "\n"
-    displayer = displayer + "Total: " + str('%.2f'%self.balance) 
-    return displayer  
+    displayer = displayer + "Total: " + str('%.2f'%self.balance)
+    return displayer
 
 #Defining bar chart creation functon
-withdrawls = list()
-percent = list()
 length = list()
 name = list()
+withdrawls = list()
+percent = list()
 def create_spend_chart(categories):
   for category in categories:
     tmp = 0
@@ -87,40 +87,33 @@ def create_spend_chart(categories):
   output = "Percentage spent by category\n"
   tmp = 100
   while  tmp >= 0:
-    if tmp == 100:
-      output = output + str(tmp) + "| "
-      for x in range(len(percent)):
-        if tmp <= percent[x]:
-          output = output + "o  "
-        else:
-          output = output + "   "
-    elif tmp > 0:
-      output = output + " " + str(tmp) + "| "
-      for x in range(len(percent)):
-        if tmp <= percent[x]:
-          output = output + "o  "
-        else:
-          output = output + "   "
-    else:
-      output = output + "  " + str(tmp) + "| "
-      for x in range(len(percent)):
-        if tmp <= percent[x]:
-          output = output + "o  "
-        else:
-          output = output + "   "
+    output = output.rstrip(" ") + str(tmp).rjust(3) + "| "
+    for x in range(len(percent)):
+      if tmp <= percent[x]:
+        output = output + "o" + "  "
+      else:
+        output = output + "   "
     tmp = tmp - 10
     output = output + "\n"
-  output = output + "    -"
+  output = output.rstrip(" ") + "    -"
+
   #Generating dashes
   for x in range(len(percent)):
-    output = output + "---"
-
+    output = output.rstrip(" ") + "---"
+  output = output + "\n"
+  
   #Generating names
   for x in range(max(length)):
-    output = output + "\n     "
+    output = output.rstrip(" ") + "     "
     for y in range(len(name)):
       try:
         output = output + name[y][x] + "  "
       except:
         output = output + "   "
+    if not x == (max(length) - 1):
+      output = output + "\n"
+  length.clear()
+  name.clear()
+  withdrawls.clear()
+  percent.clear()
   return output
