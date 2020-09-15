@@ -81,5 +81,32 @@ def create_spend_chart(categories):
 
   #Generating Output
   output = "Percentage spent by category\n"
-
-
+  tmp = 100
+  while  tmp >= 0:
+    if tmp == 100:
+      output = output + str(tmp) + "| "
+      for x in range(len(percent)):
+        if tmp == percent[x]:
+          output = output + "o  "
+        else:
+          output = output + "   "
+    elif tmp > 0:
+      output = output + " " + str(tmp) + "| "
+      for x in range(len(percent)):
+        if tmp == percent[x]:
+          output = output + "o  "
+        else:
+          output = output + "   "
+    else:
+      output = output + "  " + str(tmp) + "| "
+      for x in range(len(percent)):
+        if tmp == percent[x]:
+          output = output + "o  "
+        else:
+          output = output + "   "
+    tmp = tmp - 10
+    output = output + "\n    -"
+  #Generating dashes
+  for x in range(percent):
+    output = output + "---"
+  output = output + "\n     "
