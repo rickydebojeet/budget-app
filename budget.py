@@ -80,7 +80,7 @@ def create_spend_chart(categories):
   total = sum(withdrawls)
   for x in range(len(withdrawls)):
     per = withdrawls[x] / total
-    per = int(round(per, 1) * 100)
+    per = int(round(per, 2) * 100)
     percent.append(per)
 
   #Generating Output
