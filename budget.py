@@ -56,8 +56,30 @@ class Category:
       spart = spart[: 7].rjust(7)
       displayer = displayer + fpart + spart + "\n"
     displayer = displayer + "Total: " + str('%.2f'%self.balance) 
-    return displayer
-  
-    
+    return displayer  
 
+#Defining bar chart creation functon
+withdrawls = list()
+percent = list()
 def create_spend_chart(categories):
+  for category in categories:
+    tmp = 0
+    for items in category.ledger:
+      item = list(items.values())
+      if item[0] >= 0 :
+        continue
+      else:
+        tmp = tmp + (-(item[0]))
+    withdrawls.append(tmp)
+  
+  #Calculating Percentage
+  total = sum(withdrawls)
+  for x in range(len(withdrawls)):
+    per = withdrawls[x] / total
+    per = int(round(per, 1) * 100)
+    percent.append(per)
+
+  #Generating Output
+  output = "Percentage spent by category\n"
+
+
