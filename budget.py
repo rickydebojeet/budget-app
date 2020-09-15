@@ -61,9 +61,13 @@ class Category:
 #Defining bar chart creation functon
 withdrawls = list()
 percent = list()
+length = list()
+name = list()
 def create_spend_chart(categories):
   for category in categories:
     tmp = 0
+    length.append(len(category.name))
+    name.append(category.name)
     for items in category.ledger:
       item = list(items.values())
       if item[0] >= 0 :
@@ -71,7 +75,7 @@ def create_spend_chart(categories):
       else:
         tmp = tmp + (-(item[0]))
     withdrawls.append(tmp)
-  
+
   #Calculating Percentage
   total = sum(withdrawls)
   for x in range(len(withdrawls)):
@@ -86,27 +90,37 @@ def create_spend_chart(categories):
     if tmp == 100:
       output = output + str(tmp) + "| "
       for x in range(len(percent)):
-        if tmp == percent[x]:
+        if tmp <= percent[x]:
           output = output + "o  "
         else:
           output = output + "   "
     elif tmp > 0:
       output = output + " " + str(tmp) + "| "
       for x in range(len(percent)):
-        if tmp == percent[x]:
+        if tmp <= percent[x]:
           output = output + "o  "
         else:
           output = output + "   "
     else:
       output = output + "  " + str(tmp) + "| "
       for x in range(len(percent)):
-        if tmp == percent[x]:
+        if tmp <= percent[x]:
           output = output + "o  "
         else:
           output = output + "   "
     tmp = tmp - 10
-    output = output + "\n    -"
+    output = output + "\n"
+  output = output + "    -"
   #Generating dashes
-  for x in range(percent):
+  for x in range(len(percent)):
     output = output + "---"
-  output = output + "\n     "
+
+  #Generating names
+  for x in range(max(length)):
+    output = output + "\n     "
+    for y in range(len(name)):
+      try:
+        output = output + name[y][x] + "  "
+      except:
+        output = output + "   "
+  return output
